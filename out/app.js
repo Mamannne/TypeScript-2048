@@ -4,6 +4,31 @@ document.addEventListener('keydown', bas);
 document.addEventListener('keydown', droit);
 document.addEventListener('keydown', gauche);
 document.addEventListener('keydown', change_score);
+setValue(0, 0, 25);
+change_style_score();
+function getCell(i, j) {
+    const table = document.querySelector('.tableau');
+    const rows = table.querySelectorAll('tr');
+    // Vérifier si l'indice de ligne i est valide
+    if (i >= 0 && i < rows.length) {
+        const cells = rows[i].querySelectorAll('td');
+        // Vérifier si l'indice de colonne j est valide
+        if (j >= 0 && j < cells.length) {
+            console.log("ok");
+            return cells[j];
+        }
+    }
+    console.log('Not in range');
+    return undefined; // Renvoyer undefined si i ou j sont en dehors du tableau
+}
+function setValue(i, j, value) {
+    let cell = getCell(i, j);
+    if (cell != undefined) {
+        cell.textContent = value.toString();
+        return true;
+    }
+    return false;
+}
 function bonjour() {
     const message_01 = "Bonjour";
     console.log(message_01);
@@ -52,5 +77,4 @@ function change_score(event) {
         mon_score.textContent = score.toString();
     }
 }
-change_style_score();
 //# sourceMappingURL=app.js.map

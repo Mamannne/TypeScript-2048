@@ -5,7 +5,56 @@ document.addEventListener('keydown', bas);
 document.addEventListener('keydown', droit);
 document.addEventListener('keydown', gauche);
 document.addEventListener('keydown', change_score);
+change_style_score();
 
+function getCell(i: number, j: number): HTMLTableCellElement | undefined {
+    const table = document.querySelector('.tableau') as HTMLTableElement;
+    const rows = table.querySelectorAll('tr');
+
+    // Vérifier si l'indice de ligne i est valide
+    if (i >= 0 && i < rows.length) {
+        const cells = rows[i].querySelectorAll('td');
+
+        // Vérifier si l'indice de colonne j est valide
+        if (j >= 0 && j < cells.length) {
+            console.log("ok")
+            return cells[j] as HTMLTableCellElement;
+        }
+    }
+    console.log('Not in range')
+    return undefined; // Renvoyer undefined si i ou j sont en dehors du tableau
+}
+
+function setValue(id: string, i: number, j: number, value: number ): boolean{
+    let cell = getCell(i , j);
+    if(cell != undefined){
+        if(isEmpty(i,j) == true){
+            cell.textContent = "";
+        }
+        else{
+            cell.textContent = value.toString();
+        }
+        return true;
+    }
+    return false;
+
+}
+
+function getValue(i: number, j: number): number{
+    let cell = getCell(i , j);
+    if(cell != undefined){
+        return parseInt(cell.textContent);
+    }
+
+}
+
+function isEmpty(i: number, j: number): boolean{
+    let cell = getCell(i , j);
+    if(cell.textContent == "0"){
+        return true
+    }
+    return false
+}
 
 function bonjour(): void{
     const message_01: string = "Bonjour";
@@ -71,4 +120,3 @@ function change_score(event: KeyboardEvent): void {
     }
 }
 
-change_style_score()
