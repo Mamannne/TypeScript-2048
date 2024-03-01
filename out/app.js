@@ -4,7 +4,7 @@ document.addEventListener('keydown', bas);
 document.addEventListener('keydown', droit);
 document.addEventListener('keydown', gauche);
 document.addEventListener('keydown', change_score);
-setValue(0, 0, 25);
+window.addEventListener('DOMContentLoaded', newGame);
 change_style_score();
 function getCell(i, j) {
     const table = document.querySelector('.tableau');
@@ -21,10 +21,28 @@ function getCell(i, j) {
     console.log('Not in range');
     return undefined; // Renvoyer undefined si i ou j sont en dehors du tableau
 }
-function setValue(i, j, value) {
+function setValue(id, i, j, value) {
     let cell = getCell(i, j);
     if (cell != undefined) {
-        cell.textContent = value.toString();
+        if (isEmpty(i, j) == true) {
+            cell.textContent = "";
+        }
+        else {
+            cell.textContent = value.toString();
+        }
+        return true;
+    }
+    return false;
+}
+function getValue(i, j) {
+    let cell = getCell(i, j);
+    if (cell != undefined) {
+        return parseInt(cell.textContent);
+    }
+}
+function isEmpty(i, j) {
+    let cell = getCell(i, j);
+    if (cell.textContent == "0") {
         return true;
     }
     return false;
@@ -76,5 +94,31 @@ function change_score(event) {
         score++;
         mon_score.textContent = score.toString();
     }
+}
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+function choose_case_1() {
+    if (Math.random() > 0.85) {
+        return 4;
+    }
+    return 2;
+}
+function choose_case_2() {
+    if (Math.random() > 0.86) {
+        return 4;
+    }
+    return 2;
+}
+function newGame() {
+    const i_1 = getRandomInt(3);
+    const j_1 = getRandomInt(3);
+    const i_2 = getRandomInt(3);
+    let j_2 = getRandomInt(3);
+    while (i_1 === i_2 && j_1 === j_2) {
+        let j_2 = getRandomInt(3);
+    }
+    setValue('none', i_1, j_1, choose_case_1());
+    setValue('none', i_2, j_2, choose_case_2());
 }
 //# sourceMappingURL=app.js.map

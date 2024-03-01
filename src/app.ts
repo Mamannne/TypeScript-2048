@@ -5,6 +5,7 @@ document.addEventListener('keydown', bas);
 document.addEventListener('keydown', droit);
 document.addEventListener('keydown', gauche);
 document.addEventListener('keydown', change_score);
+window.addEventListener('DOMContentLoaded',newGame)
 change_style_score();
 
 function getCell(i: number, j: number): HTMLTableCellElement | undefined {
@@ -118,5 +119,35 @@ function change_score(event: KeyboardEvent): void {
         score++;
         mon_score.textContent = score.toString();
     }
+}
+
+function getRandomInt(max): number {
+    return Math.floor(Math.random() * max);
+  }
+
+function choose_case_1(): number{
+    if(Math.random()>0.85){
+        return 4;
+    }
+    return 2;
+}
+
+function choose_case_2(): number{
+    if(Math.random()>0.86){
+        return 4;
+    }
+    return 2;
+}
+
+function newGame(): void{
+    const i_1 = getRandomInt(3);
+    const j_1 = getRandomInt(3);
+    const i_2 = getRandomInt(3);
+    let j_2 = getRandomInt(3);
+    while(i_1 === i_2 && j_1 ===j_2){
+        let j_2 = getRandomInt(3);
+    }
+    setValue('none',i_1,j_1,choose_case_1());
+    setValue('none',i_2,j_2,choose_case_2());
 }
 
