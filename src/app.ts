@@ -151,3 +151,15 @@ function newGame(): void{
     setValue('none',i_2,j_2,choose_case_2());
 }
 
+function moveRight(i: number): boolean{
+    for (let j = 2; j> -1; j--){
+        const next = j+1;
+        if(isEmpty(i,next)){
+            const value_to_move = getValue(i,j);
+            setValue('none', i, next, value_to_move);
+            setValue('none', i, j, 0);
+            return true;
+        }
+    }
+    
+}
