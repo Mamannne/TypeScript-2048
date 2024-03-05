@@ -29,29 +29,33 @@ function getCell(i: number, j: number): HTMLTableCellElement | undefined {
 function setValue(id: string, i: number, j: number, value: number ): boolean{
     let cell = getCell(i , j);
     if(cell != undefined){
-        if(isEmpty(i,j) == true){
-            cell.textContent = "";
+        if (id === ''){
+            cell.textContent = '';
         }
         else{
-            cell.textContent = value.toString();
-        }
+            cell.textContent = value.toString();            
+    }
         return true;
     }
     return false;
+    }
 
-}
 
 function getValue(i: number, j: number): number{
     let cell = getCell(i , j);
     if(cell != undefined){
-        return parseInt(cell.textContent);
+        if(cell.textContent == ''){
+            return 0;
+        }
+        else{
+            return parseInt(cell.textContent);
+        }
     }
 
 }
 
 function isEmpty(i: number, j: number): boolean{
-    let cell = getCell(i , j);
-    if(cell.textContent == "0"){
+    if(getValue(i,j) == 0){
         return true
     }
     return false
@@ -84,7 +88,11 @@ function droit(event: KeyboardEvent): void{
     if (event.key == 'ArrowRight'){
         console.log('La flèche de droite a été enfoncée');
     }
-
+    moveRight(0);
+    moveRight(1);
+    moveRight(2);
+    moveRight(3);
+ 
 }
 
 function gauche(event: KeyboardEvent): void{
@@ -140,6 +148,7 @@ function choose_case_2(): number{
 }
 
 function newGame(): void{
+    console.log('New Game') 
     const i_1 = getRandomInt(3);
     const j_1 = getRandomInt(3);
     const i_2 = getRandomInt(3);
@@ -147,19 +156,32 @@ function newGame(): void{
     while(i_1 === i_2 && j_1 ===j_2){
         let j_2 = getRandomInt(3);
     }
+
     setValue('none',i_1,j_1,choose_case_1());
     setValue('none',i_2,j_2,choose_case_2());
+
 }
 
 function moveRight(i: number): boolean{
+    console.log('moveRight')
     for (let j = 2; j> -1; j--){
         const next = j+1;
         if(isEmpty(i,next)){
-            const value_to_move = getValue(i,j);
-            setValue('none', i, next, value_to_move);
-            setValue('none', i, j, 0);
-            return true;
+            if (getValue(i,j) != 0){
+                const value_to_move = getValue(i,j);
+                setValue('', i, j,0);
+                setValue('none', i, next, value_to_move);
+            }
+            else{
+
+                setValue('', i, j,0);
+                setValue('', i, next, 0);
+            }
+
+
         }
     }
+    return true;
     
 }
+ 

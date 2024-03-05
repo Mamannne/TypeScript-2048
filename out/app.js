@@ -24,8 +24,8 @@ function getCell(i, j) {
 function setValue(id, i, j, value) {
     let cell = getCell(i, j);
     if (cell != undefined) {
-        if (isEmpty(i, j) == true) {
-            cell.textContent = "";
+        if (id === '') {
+            cell.textContent = '';
         }
         else {
             cell.textContent = value.toString();
@@ -37,12 +37,16 @@ function setValue(id, i, j, value) {
 function getValue(i, j) {
     let cell = getCell(i, j);
     if (cell != undefined) {
-        return parseInt(cell.textContent);
+        if (cell.textContent == '') {
+            return 0;
+        }
+        else {
+            return parseInt(cell.textContent);
+        }
     }
 }
 function isEmpty(i, j) {
-    let cell = getCell(i, j);
-    if (cell.textContent == "0") {
+    if (getValue(i, j) == 0) {
         return true;
     }
     return false;
@@ -68,6 +72,10 @@ function droit(event) {
     if (event.key == 'ArrowRight') {
         console.log('La flèche de droite a été enfoncée');
     }
+    moveRight(0);
+    moveRight(1);
+    moveRight(2);
+    moveRight(3);
 }
 function gauche(event) {
     if (event.key == 'ArrowLeft') {
@@ -111,6 +119,7 @@ function choose_case_2() {
     return 2;
 }
 function newGame() {
+    console.log('New Game');
     const i_1 = getRandomInt(3);
     const j_1 = getRandomInt(3);
     const i_2 = getRandomInt(3);
@@ -120,5 +129,23 @@ function newGame() {
     }
     setValue('none', i_1, j_1, choose_case_1());
     setValue('none', i_2, j_2, choose_case_2());
+}
+function moveRight(i) {
+    console.log('moveRight');
+    for (let j = 2; j > -1; j--) {
+        const next = j + 1;
+        if (isEmpty(i, next)) {
+            if (getValue(i, j) != 0) {
+                const value_to_move = getValue(i, j);
+                setValue('', i, j, 0);
+                setValue('none', i, next, value_to_move);
+            }
+            else {
+                setValue('', i, j, 0);
+                setValue('', i, next, 0);
+            }
+        }
+    }
+    return true;
 }
 //# sourceMappingURL=app.js.map
