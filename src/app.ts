@@ -18,7 +18,6 @@ function getCell(i: number, j: number): HTMLTableCellElement | undefined {
 
         // Vérifier si l'indice de colonne j est valide
         if (j >= 0 && j < cells.length) {
-            console.log("ok")
             return cells[j] as HTMLTableCellElement;
         }
     }
@@ -73,6 +72,10 @@ function testbonjour(): void{
 function haut(event: KeyboardEvent): void{
     if (event.key == 'ArrowUp'){
         console.log('La flèche du haut a été enfoncée');
+        moveUp(0);
+        moveUp(1);
+        moveUp(2);
+        moveUp(3);
     }
 
 }
@@ -80,6 +83,10 @@ function haut(event: KeyboardEvent): void{
 function bas(event: KeyboardEvent): void{
     if (event.key == 'ArrowDown'){
         console.log('La flèche du bas a été enfoncée');
+        moveDown(0);
+        moveDown(1);
+        moveDown(2);
+        moveDown(3);
     }
 
 }
@@ -87,18 +94,24 @@ function bas(event: KeyboardEvent): void{
 function droit(event: KeyboardEvent): void{
     if (event.key == 'ArrowRight'){
         console.log('La flèche de droite a été enfoncée');
+        moveRight(0);
+        moveRight(1);
+        moveRight(2);
+        moveRight(3);
     }
-    moveRight(0);
-    moveRight(1);
-    moveRight(2);
-    moveRight(3);
+
  
 }
 
 function gauche(event: KeyboardEvent): void{
     if (event.key == 'ArrowLeft'){
         console.log('La flèche de gauche a été enfoncée');
+        moveLeft(0);
+        moveLeft(1);
+        moveLeft(2);
+        moveLeft(3); 
     }
+
 
 }
 
@@ -172,12 +185,6 @@ function moveRight(i: number): boolean{
                 setValue('', i, j,0);
                 setValue('none', i, next, value_to_move);
             }
-            else{
-
-                setValue('', i, j,0);
-                setValue('', i, next, 0);
-            }
-
 
         }
     }
@@ -185,3 +192,50 @@ function moveRight(i: number): boolean{
     
 }
  
+function moveLeft(i: number): boolean{
+    console.log('moveLeft')
+    for (let j = 1; j< 4; j++){
+        const next = j-1;
+        if(isEmpty(i,next)){
+            if (getValue(i,j) != 0){
+                const value_to_move = getValue(i,j);
+                setValue('', i, j,0);
+                setValue('none', i, next, value_to_move);
+            }
+
+        }
+    }
+    return true;
+}
+
+function moveUp(j: number): boolean{
+    console.log('moveUp')
+    for (let i = 1; i< 4; i++){
+        const next = i-1;
+        if(isEmpty(next,j)){
+            if (getValue(i,j) != 0){
+                const value_to_move = getValue(i,j);
+                setValue('', i, j,0);
+                setValue('none', next, j, value_to_move);
+            }
+
+        }
+    }
+    return true;
+}
+
+function moveDown(j: number): boolean{
+    console.log('moveDown')
+    for (let i = 2; i> -1; i--){
+        const next = i+1;
+        if(isEmpty(next,j)){
+            if (getValue(i,j) != 0){
+                const value_to_move = getValue(i,j);
+                setValue('', i, j,0);
+                setValue('none', next, j, value_to_move);
+            }
+
+        }
+    }
+    return true;
+}

@@ -14,7 +14,6 @@ function getCell(i, j) {
         const cells = rows[i].querySelectorAll('td');
         // Vérifier si l'indice de colonne j est valide
         if (j >= 0 && j < cells.length) {
-            console.log("ok");
             return cells[j];
         }
     }
@@ -61,25 +60,37 @@ function testbonjour() {
 function haut(event) {
     if (event.key == 'ArrowUp') {
         console.log('La flèche du haut a été enfoncée');
+        moveUp(0);
+        moveUp(1);
+        moveUp(2);
+        moveUp(3);
     }
 }
 function bas(event) {
     if (event.key == 'ArrowDown') {
         console.log('La flèche du bas a été enfoncée');
+        moveDown(0);
+        moveDown(1);
+        moveDown(2);
+        moveDown(3);
     }
 }
 function droit(event) {
     if (event.key == 'ArrowRight') {
         console.log('La flèche de droite a été enfoncée');
+        moveRight(0);
+        moveRight(1);
+        moveRight(2);
+        moveRight(3);
     }
-    moveRight(0);
-    moveRight(1);
-    moveRight(2);
-    moveRight(3);
 }
 function gauche(event) {
     if (event.key == 'ArrowLeft') {
         console.log('La flèche de gauche a été enfoncée');
+        moveLeft(0);
+        moveLeft(1);
+        moveLeft(2);
+        moveLeft(3);
     }
 }
 function change_style_score() {
@@ -140,9 +151,47 @@ function moveRight(i) {
                 setValue('', i, j, 0);
                 setValue('none', i, next, value_to_move);
             }
-            else {
+        }
+    }
+    return true;
+}
+function moveLeft(i) {
+    console.log('moveLeft');
+    for (let j = 1; j < 4; j++) {
+        const next = j - 1;
+        if (isEmpty(i, next)) {
+            if (getValue(i, j) != 0) {
+                const value_to_move = getValue(i, j);
                 setValue('', i, j, 0);
-                setValue('', i, next, 0);
+                setValue('none', i, next, value_to_move);
+            }
+        }
+    }
+    return true;
+}
+function moveUp(j) {
+    console.log('moveUp');
+    for (let i = 1; i < 4; i++) {
+        const next = i - 1;
+        if (isEmpty(next, j)) {
+            if (getValue(i, j) != 0) {
+                const value_to_move = getValue(i, j);
+                setValue('', i, j, 0);
+                setValue('none', next, j, value_to_move);
+            }
+        }
+    }
+    return true;
+}
+function moveDown(j) {
+    console.log('moveDown');
+    for (let i = 2; i > -1; i--) {
+        const next = i + 1;
+        if (isEmpty(next, j)) {
+            if (getValue(i, j) != 0) {
+                const value_to_move = getValue(i, j);
+                setValue('', i, j, 0);
+                setValue('none', next, j, value_to_move);
             }
         }
     }
