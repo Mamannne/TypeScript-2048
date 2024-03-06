@@ -20,10 +20,10 @@ function getCell(i, j) {
     console.log('Not in range');
     return undefined; // Renvoyer undefined si i ou j sont en dehors du tableau
 }
-function setValue(id, i, j, value) {
+function setValue(i, j, value) {
     let cell = getCell(i, j);
     if (cell != undefined) {
-        if (id === '') {
+        if (value === 0) {
             cell.textContent = '';
         }
         else {
@@ -60,37 +60,53 @@ function testbonjour() {
 function haut(event) {
     if (event.key == 'ArrowUp') {
         console.log('La flèche du haut a été enfoncée');
-        moveUp(0);
-        moveUp(1);
-        moveUp(2);
-        moveUp(3);
+        fusionUp(0);
+        fusionUp(1);
+        fusionUp(2);
+        fusionUp(3);
+        /*         moveUp(0);
+                moveUp(1);
+                moveUp(2);
+                moveUp(3); */
     }
 }
 function bas(event) {
     if (event.key == 'ArrowDown') {
         console.log('La flèche du bas a été enfoncée');
-        moveDown(0);
-        moveDown(1);
-        moveDown(2);
-        moveDown(3);
+        fusionDown(0);
+        fusionDown(1);
+        fusionDown(2);
+        fusionDown(3);
+        /*         moveDown(0);
+                moveDown(1);
+                moveDown(2);
+                moveDown(3); */
     }
 }
 function droit(event) {
     if (event.key == 'ArrowRight') {
         console.log('La flèche de droite a été enfoncée');
-        moveRight(0);
-        moveRight(1);
-        moveRight(2);
-        moveRight(3);
+        fusionRight(0);
+        fusionRight(1);
+        fusionRight(2);
+        fusionRight(3);
+        /*         moveRight(0);
+                moveRight(1);
+                moveRight(2);
+                moveRight(3);  */
     }
 }
 function gauche(event) {
     if (event.key == 'ArrowLeft') {
         console.log('La flèche de gauche a été enfoncée');
-        moveLeft(0);
-        moveLeft(1);
-        moveLeft(2);
-        moveLeft(3);
+        fusionLeft(0);
+        fusionLeft(1);
+        fusionLeft(2);
+        fusionLeft(3);
+        /*         moveLeft(0);
+                moveLeft(1);
+                moveLeft(2);
+                moveLeft(3);  */
     }
 }
 function change_style_score() {
@@ -138,63 +154,200 @@ function newGame() {
     while (i_1 === i_2 && j_1 === j_2) {
         let j_2 = getRandomInt(3);
     }
-    setValue('none', i_1, j_1, choose_case_1());
-    setValue('none', i_2, j_2, choose_case_2());
+    setValue(i_1, j_1, choose_case_1());
+    setValue(i_2, j_2, choose_case_2());
 }
 function moveRight(i) {
     console.log('moveRight');
+    let count = 0;
     for (let j = 2; j > -1; j--) {
         const next = j + 1;
         if (isEmpty(i, next)) {
-            if (getValue(i, j) != 0) {
-                const value_to_move = getValue(i, j);
-                setValue('', i, j, 0);
-                setValue('none', i, next, value_to_move);
+            const value_to_move = getValue(i, j);
+            if (value_to_move != 0) {
+                setValue(i, j, 0);
+                setValue(i, next, value_to_move);
+                count += 1;
             }
         }
     }
-    return true;
+    if (count > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 function moveLeft(i) {
     console.log('moveLeft');
+    let count = 0;
     for (let j = 1; j < 4; j++) {
         const next = j - 1;
         if (isEmpty(i, next)) {
-            if (getValue(i, j) != 0) {
-                const value_to_move = getValue(i, j);
-                setValue('', i, j, 0);
-                setValue('none', i, next, value_to_move);
+            const value_to_move = getValue(i, j);
+            if (value_to_move != 0) {
+                setValue(i, j, 0);
+                setValue(i, next, value_to_move);
+                count += 1;
             }
+        }
+    }
+    if (count > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+/*
+function moveUp(j: number): boolean{
+    console.log('moveUp')
+    for (let i = 1; i< 4; i++){
+        const next = i-1;
+        if(isEmpty(next,j)){
+
+            const value_to_move = getValue(i,j);
+            setValue(i, j,0);
+            setValue(next, j, value_to_move);
+
         }
     }
     return true;
 }
+
+function moveDown(j: number): boolean{
+    console.log('moveDown')
+    for (let i = 2; i> -1; i--){
+        const next = i+1;
+        if(isEmpty(next,j)){
+
+            const value_to_move = getValue(i,j);
+            setValue(i, j,0);
+            setValue(next, j, value_to_move);
+
+
+        }
+    }
+    return true;*/
 function moveUp(j) {
     console.log('moveUp');
+    let count = 0;
     for (let i = 1; i < 4; i++) {
         const next = i - 1;
         if (isEmpty(next, j)) {
-            if (getValue(i, j) != 0) {
-                const value_to_move = getValue(i, j);
-                setValue('', i, j, 0);
-                setValue('none', next, j, value_to_move);
+            const value_to_move = getValue(i, j);
+            if (value_to_move != 0) {
+                setValue(i, j, 0);
+                setValue(next, j, value_to_move);
+                count += 1;
             }
         }
     }
-    return true;
+    if (count > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 function moveDown(j) {
     console.log('moveDown');
+    let count = 0;
     for (let i = 2; i > -1; i--) {
         const next = i + 1;
         if (isEmpty(next, j)) {
-            if (getValue(i, j) != 0) {
-                const value_to_move = getValue(i, j);
-                setValue('', i, j, 0);
-                setValue('none', next, j, value_to_move);
+            const value_to_move = getValue(i, j);
+            if (value_to_move != 0) {
+                setValue(i, j, 0);
+                setValue(next, j, value_to_move);
+                count += 1;
             }
         }
     }
-    return true;
+    if (count > 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function fusionRight(i) {
+    console.log('fusionRight');
+    let flag = moveRight(i);
+    if (flag == true) {
+        console.log(i, "moved right");
+        return true;
+    }
+    else {
+        console.log(i, "did not move right");
+        let j = 0;
+        while (flag == false && j < 3) {
+            flag = fusion(i, j, i, j + 1);
+            j++;
+        }
+        return flag;
+    }
+}
+function fusion(i_1, j_1, i_2, j_2) {
+    console.log('fusion');
+    if (getValue(i_1, j_1) === getValue(i_2, j_2) && getValue(i_1, j_1) != 0) {
+        const value_to_fusion = getValue(i_1, j_1) * 2;
+        setValue(i_2, j_2, value_to_fusion);
+        setValue(i_1, j_1, 0);
+        return true;
+    }
+    return false;
+}
+function fusionLeft(i) {
+    console.log('fusionLeft');
+    let flag = moveLeft(i);
+    if (flag == true) {
+        console.log(i, "moved left");
+        return true;
+    }
+    else {
+        console.log(i, "did not move left");
+        let j = 3;
+        while (flag == false && j > 0) {
+            console.log('trying to fusion', j, j - 1);
+            flag = fusion(i, j, i, j - 1);
+            j--;
+        }
+        return flag;
+    }
+}
+function fusionUp(j) {
+    console.log('fusionUp');
+    let flag = moveUp(j);
+    if (flag == true) {
+        console.log(j, "moved up");
+        return true;
+    }
+    else {
+        console.log(j, "did not move up");
+        let i = 3;
+        while (flag == false && i > 0) {
+            flag = fusion(i, j, i - 1, j);
+            i--;
+        }
+        return flag;
+    }
+}
+function fusionDown(j) {
+    console.log('fusionDown');
+    let flag = moveDown(j);
+    if (flag == true) {
+        console.log(j, "moved down");
+        return true;
+    }
+    else {
+        console.log(j, "did not move down");
+        let i = 0;
+        while (flag == false && i < 3) {
+            flag = fusion(i, j, i + 1, j);
+            i++;
+        }
+        return flag;
+    }
 }
 //# sourceMappingURL=app.js.map
