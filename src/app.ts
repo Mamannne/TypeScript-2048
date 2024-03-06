@@ -309,20 +309,20 @@ function moveDown(j: number): boolean{
 
 function fusionRight(i: number): boolean {
     console.log('fusionRight')
-    let flag = moveRight(i);
-    if (flag == true){
-        console.log(i,"moved right")
+    let count = 0;
+    for(let j=3; j>-1; j--){
+        if(getValue(i,j) === getValue(i,j+1) && getValue(i,j) != 0){
+            const value_to_fusion = getValue(i,j)*2;
+            setValue(i,j,0);
+            setValue(i,j+1,value_to_fusion);
+            count++;
+        }
+
+    }
+    if(count>0){
         return true;
     }
-    else{
-        console.log(i,"did not move right")
-        let j = 0;
-        while(flag == false && j<3){
-            flag = fusion(i,j,i,j+1);
-            j++;
-        }
-        return flag;
-    }
+    return false;
 }
 
 
@@ -339,7 +339,7 @@ function fusion(i_1:number, j_1:number,i_2: number, j_2:number): boolean{
     return false;
 }
 
-function fusionLeft(i: number): boolean{
+/* function fusionLeft(i: number): boolean{
     console.log('fusionLeft')
     let flag = moveLeft(i);
     if (flag == true){
@@ -392,4 +392,56 @@ function fusionDown(j: number): boolean{
         }
         return flag;
     }
+} */
+
+function fusionLeft(i: number): boolean{
+    console.log('fusionLeft')
+    let count = 0;
+    for(let j=1; j<4; j++){
+        if(getValue(i,j) === getValue(i,j-1) && getValue(i,j) != 0){
+            const value_to_fusion = getValue(i,j)*2;
+            setValue(i,j,0);
+            setValue(i,j-1,value_to_fusion);
+            count++;
+        }
+    }
+    if(count>0){
+        return true;
+    }
+    return false;
 }
+
+function fusionUp(j: number): boolean{
+    console.log('fusionUp')
+    let count = 0;
+    for(let i=1; i<4; i++){
+        if(getValue(i,j) === getValue(i-1,j) && getValue(i,j) != 0){
+            const value_to_fusion = getValue(i,j)*2;
+            setValue(i,j,0);
+            setValue(i-1,j,value_to_fusion);
+            count++;
+        }
+    }
+    if(count>0){
+        return true;
+    }
+    return false;
+}
+
+function fusionDown(j: number): boolean{
+    console.log('fusionDown')
+    let count = 0;
+    for(let i=2; i>-1; i--){
+        if(getValue(i,j) === getValue(i+1,j) && getValue(i,j) != 0){
+            const value_to_fusion = getValue(i,j)*2;
+            setValue(i,j,0);
+            setValue(i+1,j,value_to_fusion);
+            count++;
+        }
+    }
+    if(count>0){
+        return true;
+    }
+    return false;
+}
+
