@@ -103,10 +103,6 @@ function gauche(event) {
         fusionLeft(1);
         fusionLeft(2);
         fusionLeft(3);
-        /*         moveLeft(0);
-                moveLeft(1);
-                moveLeft(2);
-                moveLeft(3);  */
     }
 }
 function change_style_score() {
@@ -274,13 +270,17 @@ function moveDown(j) {
 function fusionRight(i) {
     console.log('fusionRight');
     let count = 0;
-    for (let j = 3; j > -1; j--) {
-        if (getValue(i, j) === getValue(i, j + 1) && getValue(i, j) != 0) {
-            const value_to_fusion = getValue(i, j) * 2;
-            setValue(i, j, 0);
-            setValue(i, j + 1, value_to_fusion);
-            count++;
-        }
+    let flag = fusion(i, 2, i, 3);
+    if (flag == true) {
+        count++;
+    }
+    flag = fusion(i, 1, i, 2);
+    if (flag == true) {
+        count++;
+    }
+    flag = fusion(i, 0, i, 1);
+    if (flag == true) {
+        count++;
     }
     if (count > 0) {
         return true;
@@ -297,70 +297,20 @@ function fusion(i_1, j_1, i_2, j_2) {
     }
     return false;
 }
-/* function fusionLeft(i: number): boolean{
-    console.log('fusionLeft')
-    let flag = moveLeft(i);
-    if (flag == true){
-        console.log(i,"moved left")
-        return true;
-    }
-    else{
-        console.log(i,"did not move left")
-        let j = 3;
-        while(flag == false && j>0){
-            console.log('trying to fusion',j,j-1)
-            flag = fusion(i,j,i,j-1);
-            j--;
-        }
-        return flag;
-    }
-}
-
-function fusionUp(j: number): boolean{
-    console.log('fusionUp')
-    let flag = moveUp(j);
-    if (flag == true){
-        console.log(j,"moved up")
-        return true;
-    }
-    else{
-        console.log(j,"did not move up")
-        let i = 3;
-        while(flag == false && i>0){
-            flag = fusion(i,j,i-1,j);
-            i--;
-        }
-        return flag;
-    }
-}
-
-function fusionDown(j: number): boolean{
-    console.log('fusionDown')
-    let flag = moveDown(j);
-    if (flag == true){
-        console.log(j,"moved down")
-        return true;
-    }
-    else{
-        console.log(j,"did not move down")
-        let i = 0;
-        while(flag == false && i<3){
-            flag = fusion(i,j,i+1,j);
-            i++;
-        }
-        return flag;
-    }
-} */
 function fusionLeft(i) {
     console.log('fusionLeft');
     let count = 0;
-    for (let j = 1; j < 4; j++) {
-        if (getValue(i, j) === getValue(i, j - 1) && getValue(i, j) != 0) {
-            const value_to_fusion = getValue(i, j) * 2;
-            setValue(i, j, 0);
-            setValue(i, j - 1, value_to_fusion);
-            count++;
-        }
+    let flag = fusion(i, 1, i, 0);
+    if (flag == true) {
+        count++;
+    }
+    flag = fusion(i, 2, i, 1);
+    if (flag == true) {
+        count++;
+    }
+    flag = fusion(i, 3, i, 2);
+    if (flag == true) {
+        count++;
     }
     if (count > 0) {
         return true;
@@ -370,13 +320,17 @@ function fusionLeft(i) {
 function fusionUp(j) {
     console.log('fusionUp');
     let count = 0;
-    for (let i = 1; i < 4; i++) {
-        if (getValue(i, j) === getValue(i - 1, j) && getValue(i, j) != 0) {
-            const value_to_fusion = getValue(i, j) * 2;
-            setValue(i, j, 0);
-            setValue(i - 1, j, value_to_fusion);
-            count++;
-        }
+    let flag = fusion(1, j, 0, j);
+    if (flag == true) {
+        count++;
+    }
+    flag = fusion(2, j, 1, j);
+    if (flag == true) {
+        count++;
+    }
+    flag = fusion(3, j, 2, j);
+    if (flag == true) {
+        count++;
     }
     if (count > 0) {
         return true;
@@ -386,13 +340,39 @@ function fusionUp(j) {
 function fusionDown(j) {
     console.log('fusionDown');
     let count = 0;
-    for (let i = 2; i > -1; i--) {
-        if (getValue(i, j) === getValue(i + 1, j) && getValue(i, j) != 0) {
-            const value_to_fusion = getValue(i, j) * 2;
-            setValue(i, j, 0);
-            setValue(i + 1, j, value_to_fusion);
-            count++;
-        }
+    let flag = fusion(2, j, 3, j);
+    if (flag == true) {
+        count++;
+    }
+    flag = fusion(1, j, 2, j);
+    if (flag == true) {
+        count++;
+    }
+    flag = fusion(0, j, 1, j);
+    if (flag == true) {
+        count++;
+    }
+    if (count > 0) {
+        return true;
+    }
+    return false;
+}
+function right(i) {
+    let count = 0;
+    let flag = moveRight(i);
+    if (flag == true) {
+        console.log(i, "moved right");
+        count++;
+    }
+    flag = fusionRight(i);
+    if (flag == true) {
+        console.log(i, "fused right");
+        count++;
+    }
+    flag = moveRight(i);
+    if (flag == true) {
+        console.log(i, "moved right");
+        count++;
     }
     if (count > 0) {
         return true;
