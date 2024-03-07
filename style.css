@@ -1,5 +1,5 @@
 .titre_01 {
-    color: red;
+    color:#fad000 ;
     text-align: center;
 }
 
@@ -11,11 +11,18 @@
     text-align: center;
     width: 125px;
     height: 125px;
-    border: 1px solid black;
+    border: 3px solid #fad000;
+    color:  white;
 }
 
 table {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 10px; 
+}
+
+body {
+    background-color: #1e1e3f;
+
 }

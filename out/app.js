@@ -137,8 +137,9 @@ function change_style_score() {
     const mon_score = document.getElementById('score');
     if (mon_score) {
         mon_score.style.textAlign = 'center';
-        mon_score.style.color = 'purple';
-        mon_score.style.backgroundColor = 'grey';
+        mon_score.style.color = '#9edebd';
+        mon_score.style.backgroundColor = '#2d2b55';
+        mon_score.style.border = '3px solid #fad000';
         mon_score.style.fontSize = '50px';
     }
     else {
@@ -467,7 +468,7 @@ class Popup {
         this.popup.style.visibility = 'visible';
         setTimeout(() => {
             this.popup.style.visibility = 'hidden';
-        }, 2000);
+        }, 1000);
     }
     showPopupForEver() {
         this.popup.style.visibility = 'visible';
