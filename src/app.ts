@@ -5,7 +5,7 @@ document.addEventListener('keydown', bas);
 document.addEventListener('keydown', droit);
 document.addEventListener('keydown', gauche);
 document.addEventListener('keydown', change_score);
-window.addEventListener('DOMContentLoaded',newGame)
+//window.addEventListener('DOMContentLoaded',newGame)
 change_style_score();
 
 function getCell(i: number, j: number): HTMLTableCellElement | undefined {
@@ -72,14 +72,10 @@ function testbonjour(): void{
 function haut(event: KeyboardEvent): void{
     if (event.key == 'ArrowUp'){
         console.log('La flèche du haut a été enfoncée');
-        fusionUp(0);
-        fusionUp(1);
-        fusionUp(2);
-        fusionUp(3);
-/*         moveUp(0);
-        moveUp(1);
-        moveUp(2);
-        moveUp(3); */
+        up(0);
+        up(1);
+        up(2);
+        up(3);
     }
 
 }
@@ -87,14 +83,10 @@ function haut(event: KeyboardEvent): void{
 function bas(event: KeyboardEvent): void{
     if (event.key == 'ArrowDown'){
         console.log('La flèche du bas a été enfoncée');
-        fusionDown(0);
-        fusionDown(1);
-        fusionDown(2);
-        fusionDown(3);
-/*         moveDown(0);
-        moveDown(1);
-        moveDown(2);
-        moveDown(3); */
+        down(0);
+        down(1);
+        down(2);
+        down(3);
     }
 
 }
@@ -102,14 +94,11 @@ function bas(event: KeyboardEvent): void{
 function droit(event: KeyboardEvent): void{
     if (event.key == 'ArrowRight'){
         console.log('La flèche de droite a été enfoncée');
-        fusionRight(0);
-        fusionRight(1);
-        fusionRight(2);
-        fusionRight(3);
-/*         moveRight(0);
-        moveRight(1);
-        moveRight(2);
-        moveRight(3);  */
+        right(0);
+        right(1);
+        right(2);
+        right(3);
+
     }
 
  
@@ -118,10 +107,10 @@ function droit(event: KeyboardEvent): void{
 function gauche(event: KeyboardEvent): void{
     if (event.key == 'ArrowLeft'){
         console.log('La flèche de gauche a été enfoncée');
-        fusionLeft(0);
-        fusionLeft(1);
-        fusionLeft(2);
-        fusionLeft(3);
+        left(0);
+        left(1);
+        left(2);
+        left(3);
     }
 
 
@@ -403,9 +392,21 @@ function fusionDown(j: number): boolean{
 }
 
 
+// ici mes fonctions sont plus longue que celles demadées car j'ai du les adapter aux erreurs dans mes fonctions précèdentes. Malgré tout le résultat fonctionne
+
 function right(i:number):boolean{
     let count = 0;
     let flag = moveRight(i);
+    if (flag == true){
+        console.log(i,"moved right")
+        count++;
+    }
+    flag = fusionRight(i);
+    if (flag == true){
+        console.log(i,"fused right")
+        count++;
+    }
+    flag = moveRight(i);
     if (flag == true){
         console.log(i,"moved right")
         count++;
@@ -425,6 +426,105 @@ function right(i:number):boolean{
     }
     return false;
 
+}
+
+function left(i:number):boolean{
+    let count = 0;
+    let flag = moveLeft(i);
+    if (flag == true){
+        console.log(i,"moved left")
+        count++;
+    }
+    flag = fusionLeft(i);
+    if (flag == true){
+        console.log(i,"fused left")
+        count++;
+    }
+    flag = moveLeft(i);
+    if (flag == true){
+        console.log(i,"moved left")
+        count++;
+    }
+    flag = fusionLeft(i);
+    if (flag == true){
+        console.log(i,"fused left")
+        count++;
+    }
+    flag = moveLeft(i);
+    if (flag == true){
+        console.log(i,"moved left")
+        count++;
+    }
+    if(count>0){
+        return true;
+    }
+    return false;
+}
+
+function up(j:number):boolean{
+    let count = 0;
+    let flag = moveUp(j);
+    if (flag == true){
+        console.log(j,"moved up")
+        count++;
+    }
+    flag = fusionUp(j);
+    if (flag == true){
+        console.log(j,"fused up")
+        count++;
+    }
+    flag = moveUp(j);
+    if (flag == true){
+        console.log(j,"moved up")
+        count++;
+    }
+    flag = fusionUp(j);
+    if (flag == true){
+        console.log(j,"fused up")
+        count++;
+    }
+    flag = moveUp(j);
+    if (flag == true){
+        console.log(j,"moved up")
+        count++;
+    }
+    if(count>0){
+        return true;
+    }
+    return false;
+}   
+
+function down(j:number):boolean{
+    let count = 0;
+    let flag = moveDown(j);
+    if (flag == true){
+        console.log(j,"moved down")
+        count++;
+    }
+    flag = fusionDown(j);
+    if (flag == true){
+        console.log(j,"fused down")
+        count++;
+    }
+    flag = moveDown(j);
+    if (flag == true){
+        console.log(j,"moved down")
+        count++;
+    }
+    flag = fusionDown(j);
+    if (flag == true){
+        console.log(j,"fused down")
+        count++;
+    }
+    flag = moveDown(j);
+    if (flag == true){
+        console.log(j,"moved down")
+        count++;
+    }
+    if(count>0){
+        return true;
+    }
+    return false;
 }
 
 
