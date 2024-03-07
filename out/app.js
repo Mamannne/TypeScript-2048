@@ -4,7 +4,7 @@ document.addEventListener('keydown', bas);
 document.addEventListener('keydown', droit);
 document.addEventListener('keydown', gauche);
 document.addEventListener('keydown', change_score);
-//window.addEventListener('DOMContentLoaded',newGame)
+window.addEventListener('DOMContentLoaded', newGame);
 change_style_score();
 function getCell(i, j) {
     const table = document.querySelector('.tableau');
@@ -58,39 +58,79 @@ function testbonjour() {
     bonjour();
 }
 function haut(event) {
+    const popup = new Popup("Ne peux pas aller plus haut");
     if (event.key == 'ArrowUp') {
         console.log('La flèche du haut a été enfoncée');
-        up(0);
-        up(1);
-        up(2);
-        up(3);
+        let flag = count(up);
+        if (flag == false) {
+            console.log('Did not move up');
+            popup.showPopup();
+        }
+        else {
+            add_case();
+        }
+        if (canMove() === false) {
+            console.log('Game over');
+            const popup = new Popup('Game over');
+            popup.showPopupForEver();
+        }
     }
 }
 function bas(event) {
+    const popup = new Popup("Ne peux pas aller plus bas");
     if (event.key == 'ArrowDown') {
         console.log('La flèche du bas a été enfoncée');
-        down(0);
-        down(1);
-        down(2);
-        down(3);
+        let flag = count(down);
+        if (flag == false) {
+            console.log('Did not move down');
+            popup.showPopup();
+        }
+        else {
+            add_case();
+        }
+        if (canMove() === false) {
+            console.log('Game over');
+            const popup = new Popup('Game over');
+            popup.showPopupForEver();
+        }
     }
 }
 function droit(event) {
+    const popup = new Popup("Ne peux pas aller plus à droite");
     if (event.key == 'ArrowRight') {
         console.log('La flèche de droite a été enfoncée');
-        right(0);
-        right(1);
-        right(2);
-        right(3);
+        let flag = count(right);
+        if (flag == false) {
+            console.log('Did not move right');
+            popup.showPopup();
+        }
+        else {
+            add_case();
+        }
+        if (canMove() === false) {
+            console.log('Game over');
+            const popup = new Popup('Game over');
+            popup.showPopupForEver();
+        }
     }
 }
 function gauche(event) {
+    const popup = new Popup("Ne peux pas aller plus à gauche");
     if (event.key == 'ArrowLeft') {
         console.log('La flèche de gauche a été enfoncée');
-        left(0);
-        left(1);
-        left(2);
-        left(3);
+        let flag = count(left);
+        if (flag == false) {
+            console.log('Did not move left');
+            popup.showPopup();
+        }
+        else {
+            add_case();
+        }
+        if (canMove() === false) {
+            console.log('Game over');
+            const popup = new Popup('Game over');
+            popup.showPopupForEver();
+        }
     }
 }
 function change_style_score() {
@@ -117,14 +157,8 @@ function change_score(event) {
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
-function choose_case_1() {
-    if (Math.random() > 0.85) {
-        return 4;
-    }
-    return 2;
-}
-function choose_case_2() {
-    if (Math.random() > 0.86) {
+function choose_case(p) {
+    if (Math.random() > p) {
         return 4;
     }
     return 2;
@@ -138,8 +172,8 @@ function newGame() {
     while (i_1 === i_2 && j_1 === j_2) {
         let j_2 = getRandomInt(3);
     }
-    setValue(i_1, j_1, choose_case_1());
-    setValue(i_2, j_2, choose_case_2());
+    setValue(i_1, j_1, choose_case(0.85));
+    setValue(i_2, j_2, choose_case(0.86));
 }
 function moveRight(i) {
     console.log('moveRight');
@@ -176,43 +210,9 @@ function moveLeft(i) {
             }
         }
     }
-    if (count > 0) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    console.log('quitte moveleft');
+    return (count > 0);
 }
-/*
-function moveUp(j: number): boolean{
-    console.log('moveUp')
-    for (let i = 1; i< 4; i++){
-        const next = i-1;
-        if(isEmpty(next,j)){
-
-            const value_to_move = getValue(i,j);
-            setValue(i, j,0);
-            setValue(next, j, value_to_move);
-
-        }
-    }
-    return true;
-}
-
-function moveDown(j: number): boolean{
-    console.log('moveDown')
-    for (let i = 2; i> -1; i--){
-        const next = i+1;
-        if(isEmpty(next,j)){
-
-            const value_to_move = getValue(i,j);
-            setValue(i, j,0);
-            setValue(next, j, value_to_move);
-
-
-        }
-    }
-    return true;*/
 function moveUp(j) {
     console.log('moveUp');
     let count = 0;
@@ -257,23 +257,72 @@ function moveDown(j) {
 }
 function fusionRight(i) {
     console.log('fusionRight');
-    let count = 0;
-    let flag = fusion(i, 2, i, 3);
-    if (flag == true) {
-        count++;
+    let tmp = 0;
+    for (let j = 3; j > 0; j--) {
+        let k = j - 1;
+        while (k > -1 && isEmpty(i, k)) {
+            k--;
+        }
+        console.log(j, k);
+        let previous_not_empty = k;
+        let a = fusion(i, previous_not_empty, i, j);
+        if (a == true) {
+            tmp++;
+        }
     }
-    flag = fusion(i, 1, i, 2);
-    if (flag == true) {
-        count++;
+    console.log(tmp, 'fusionright tmp');
+    return (tmp > 0);
+}
+function fusionLeft(i) {
+    console.log('fusionLeft');
+    let tmp = 0;
+    for (let j = 0; j < 3; j++) {
+        let k = j + 1;
+        while (k < 4 && isEmpty(i, k)) {
+            k++;
+        }
+        let previous_not_empty = k;
+        let flag = fusion(i, previous_not_empty, i, j);
+        if (flag == true) {
+            tmp++;
+        }
     }
-    flag = fusion(i, 0, i, 1);
-    if (flag == true) {
-        count++;
+    console.log('quitte fusionLeft');
+    return (tmp > 0);
+}
+function fusionUp(j) {
+    console.log('fusionUp');
+    let tmp = 0;
+    for (let i = 0; i < 3; i++) {
+        let k = i + 1;
+        while (k < 4 && isEmpty(k, j)) {
+            k++;
+        }
+        console.log(i, k);
+        let previous_not_empty = k;
+        let flag = fusion(previous_not_empty, j, i, j);
+        if (flag == true) {
+            tmp++;
+        }
     }
-    if (count > 0) {
-        return true;
+    return (tmp > 0);
+}
+function fusionDown(j) {
+    console.log('fusionDown');
+    let tmp = 0;
+    for (let i = 3; i > 0; i--) {
+        let k = i - 1;
+        while (k > -1 && isEmpty(k, j)) {
+            k--;
+        }
+        console.log(i, k);
+        let previous_not_empty = k;
+        let flag = fusion(previous_not_empty, j, i, j);
+        if (flag == true) {
+            tmp++;
+        }
     }
-    return false;
+    return (tmp > 0);
 }
 function fusion(i_1, j_1, i_2, j_2) {
     console.log('fusion');
@@ -285,192 +334,188 @@ function fusion(i_1, j_1, i_2, j_2) {
     }
     return false;
 }
-function fusionLeft(i) {
-    console.log('fusionLeft');
-    let count = 0;
-    let flag = fusion(i, 1, i, 0);
-    if (flag == true) {
-        count++;
-    }
-    flag = fusion(i, 2, i, 1);
-    if (flag == true) {
-        count++;
-    }
-    flag = fusion(i, 3, i, 2);
-    if (flag == true) {
-        count++;
-    }
-    if (count > 0) {
-        return true;
-    }
-    return false;
-}
-function fusionUp(j) {
-    console.log('fusionUp');
-    let count = 0;
-    let flag = fusion(1, j, 0, j);
-    if (flag == true) {
-        count++;
-    }
-    flag = fusion(2, j, 1, j);
-    if (flag == true) {
-        count++;
-    }
-    flag = fusion(3, j, 2, j);
-    if (flag == true) {
-        count++;
-    }
-    if (count > 0) {
-        return true;
-    }
-    return false;
-}
-function fusionDown(j) {
-    console.log('fusionDown');
-    let count = 0;
-    let flag = fusion(2, j, 3, j);
-    if (flag == true) {
-        count++;
-    }
-    flag = fusion(1, j, 2, j);
-    if (flag == true) {
-        count++;
-    }
-    flag = fusion(0, j, 1, j);
-    if (flag == true) {
-        count++;
-    }
-    if (count > 0) {
-        return true;
-    }
-    return false;
-}
+// ici mes fonctions sont plus longue que celles demadées car j'ai du les adapter aux erreurs dans mes fonctions précèdentes. Malgré tout le résultat fonctionne
 function right(i) {
-    let count = 0;
+    let tmp = 0;
     let flag = moveRight(i);
     if (flag == true) {
         console.log(i, "moved right");
-        count++;
+        tmp++;
     }
     flag = fusionRight(i);
     if (flag == true) {
         console.log(i, "fused right");
-        count++;
+        tmp++;
     }
     flag = moveRight(i);
     if (flag == true) {
         console.log(i, "moved right");
-        count++;
-    }
-    flag = fusionRight(i);
-    if (flag == true) {
-        console.log(i, "fused right");
-        count++;
+        tmp++;
     }
     flag = moveRight(i);
     if (flag == true) {
         console.log(i, "moved right");
-        count++;
+        tmp++;
     }
-    if (count > 0) {
-        return true;
-    }
-    return false;
+    return (tmp > 0);
 }
 function left(i) {
-    let count = 0;
+    console.log('left function');
+    let tmp = 0;
     let flag = moveLeft(i);
     if (flag == true) {
         console.log(i, "moved left");
-        count++;
+        tmp++;
     }
     flag = fusionLeft(i);
     if (flag == true) {
         console.log(i, "fused left");
-        count++;
+        tmp++;
     }
     flag = moveLeft(i);
     if (flag == true) {
         console.log(i, "moved left");
-        count++;
-    }
-    flag = fusionLeft(i);
-    if (flag == true) {
-        console.log(i, "fused left");
-        count++;
+        tmp++;
     }
     flag = moveLeft(i);
     if (flag == true) {
         console.log(i, "moved left");
-        count++;
+        tmp++;
     }
-    if (count > 0) {
-        return true;
-    }
-    return false;
+    console.log('quitte left');
+    return (tmp > 0);
 }
 function up(j) {
-    let count = 0;
+    let tmp = 0;
     let flag = moveUp(j);
     if (flag == true) {
         console.log(j, "moved up");
-        count++;
+        tmp++;
     }
     flag = fusionUp(j);
     if (flag == true) {
         console.log(j, "fused up");
-        count++;
+        tmp++;
     }
     flag = moveUp(j);
     if (flag == true) {
         console.log(j, "moved up");
-        count++;
-    }
-    flag = fusionUp(j);
-    if (flag == true) {
-        console.log(j, "fused up");
-        count++;
+        tmp++;
     }
     flag = moveUp(j);
     if (flag == true) {
         console.log(j, "moved up");
-        count++;
+        tmp++;
     }
-    if (count > 0) {
-        return true;
-    }
-    return false;
+    return (tmp > 0);
 }
 function down(j) {
-    let count = 0;
+    let tmp = 0;
     let flag = moveDown(j);
     if (flag == true) {
         console.log(j, "moved down");
-        count++;
+        tmp++;
     }
     flag = fusionDown(j);
     if (flag == true) {
         console.log(j, "fused down");
-        count++;
+        tmp++;
     }
     flag = moveDown(j);
     if (flag == true) {
         console.log(j, "moved down");
-        count++;
-    }
-    flag = fusionDown(j);
-    if (flag == true) {
-        console.log(j, "fused down");
-        count++;
+        tmp++;
     }
     flag = moveDown(j);
     if (flag == true) {
         console.log(j, "moved down");
-        count++;
+        tmp++;
     }
-    if (count > 0) {
-        return true;
+    return (tmp > 0);
+}
+function count(f1) {
+    let count = 0;
+    for (let i = 0; i < 4; i++) {
+        let flag = f1(i);
+        if (flag == true) {
+            console.log(i);
+            count++;
+        }
     }
+    console.log(count, 'quitte count');
+    return (count > 0);
+}
+class Popup {
+    constructor(str) {
+        this.popup = document.createElement('div');
+        this.popup.style.visibility = 'hidden';
+        this.popup.style.minWidth = '250px';
+        this.popup.style.backgroundColor = '#333';
+        this.popup.style.color = '#fff';
+        this.popup.style.textAlign = 'center';
+        this.popup.style.borderRadius = '2px';
+        this.popup.style.padding = '16px';
+        this.popup.style.position = 'fixed';
+        this.popup.style.zIndex = '1';
+        this.popup.style.left = '50%';
+        this.popup.style.top = '50%';
+        this.popup.style.transform = 'translate(-50%, -50%)';
+        this.popup.textContent = str;
+        document.body.appendChild(this.popup);
+    }
+    showPopup() {
+        this.popup.style.visibility = 'visible';
+        setTimeout(() => {
+            this.popup.style.visibility = 'hidden';
+        }, 2000);
+    }
+    showPopupForEver() {
+        this.popup.style.visibility = 'visible';
+    }
+}
+function canMove() {
+    // Check for empty cells
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            if (getValue(i, j) === 0) {
+                return true;
+            }
+        }
+    }
+    // Check for adjacent cells with the same value
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (getValue(i, j) === getValue(i, j + 1)) {
+                return true;
+            }
+        }
+    }
+    for (let j = 0; j < 4; j++) {
+        for (let i = 0; i < 3; i++) {
+            if (getValue(i, j) === getValue(i + 1, j)) {
+                return true;
+            }
+        }
+    }
+    // No moves left
     return false;
+}
+function add_case() {
+    const emptyCells = [];
+    // Find all empty cells
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            if (isEmpty(i, j)) {
+                emptyCells.push({ i, j });
+            }
+        }
+    }
+    // Choose a random empty cell
+    const randomIndex = Math.floor(Math.random() * emptyCells.length);
+    const randomCell = emptyCells[randomIndex];
+    // Choose a random value (2 or 4)
+    let randomValue = choose_case(0.82);
+    // Set the value of the chosen cell
+    setValue(randomCell.i, randomCell.j, randomValue);
 }
 //# sourceMappingURL=app.js.map
