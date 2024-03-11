@@ -3,7 +3,6 @@ document.addEventListener('keydown', haut);
 document.addEventListener('keydown', bas);
 document.addEventListener('keydown', droit);
 document.addEventListener('keydown', gauche);
-document.addEventListener('keydown', change_score);
 window.addEventListener('DOMContentLoaded', newGame);
 change_style_score();
 function getCell(i, j) {
@@ -67,11 +66,12 @@ function haut(event) {
             popup.showPopup();
         }
         else {
+            change_score();
             add_case();
         }
         if (canMove() === false) {
             console.log('Game over');
-            const popup = new Popup('Game over');
+            const popup = new Popup('Game over', true);
             popup.showPopupForEver();
         }
     }
@@ -86,11 +86,12 @@ function bas(event) {
             popup.showPopup();
         }
         else {
+            change_score();
             add_case();
         }
         if (canMove() === false) {
             console.log('Game over');
-            const popup = new Popup('Game over');
+            const popup = new Popup('Game over', true);
             popup.showPopupForEver();
         }
     }
@@ -105,11 +106,12 @@ function droit(event) {
             popup.showPopup();
         }
         else {
+            change_score();
             add_case();
         }
         if (canMove() === false) {
             console.log('Game over');
-            const popup = new Popup('Game over');
+            const popup = new Popup('Game over', true);
             popup.showPopupForEver();
         }
     }
@@ -124,11 +126,12 @@ function gauche(event) {
             popup.showPopup();
         }
         else {
+            change_score();
             add_case();
         }
         if (canMove() === false) {
             console.log('Game over');
-            const popup = new Popup('Game over');
+            const popup = new Popup('Game over', true);
             popup.showPopupForEver();
         }
     }
@@ -146,14 +149,11 @@ function change_style_score() {
         console.error('Pas de score');
     }
 }
-function change_score(event) {
+function change_score() {
     const mon_score = document.getElementById('score');
-    if (event.key == 'ArrowLeft' || event.key == 'ArrowRight'
-        || event.key == 'ArrowDown' || event.key == 'ArrowUp') {
-        let score = parseInt(mon_score.textContent);
-        score++;
-        mon_score.textContent = score.toString();
-    }
+    let score = parseInt(mon_score.textContent);
+    score++;
+    mon_score.textContent = score.toString();
 }
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
@@ -335,7 +335,6 @@ function fusion(i_1, j_1, i_2, j_2) {
     }
     return false;
 }
-// ici mes fonctions sont plus longue que celles demadées car j'ai du les adapter aux erreurs dans mes fonctions précèdentes. Malgré tout le résultat fonctionne
 function right(i) {
     let tmp = 0;
     let flag = moveRight(i);
@@ -447,7 +446,7 @@ function count(f1) {
     return (count > 0);
 }
 class Popup {
-    constructor(str) {
+    constructor(str, end = false) {
         this.popup = document.createElement('div');
         this.popup.style.visibility = 'hidden';
         this.popup.style.minWidth = '250px';
@@ -462,6 +461,42 @@ class Popup {
         this.popup.style.top = '50%';
         this.popup.style.transform = 'translate(-50%, -50%)';
         this.popup.textContent = str;
+        if (end) {
+            this.closeButton = document.createElement('button');
+            this.closeButton.textContent = 'Restart Game';
+            this.closeButton.style.appearance = 'button';
+            this.closeButton.style.backgroundColor = '#000';
+            this.closeButton.style.backgroundImage = 'none';
+            this.closeButton.style.border = '1px solid #000';
+            this.closeButton.style.borderRadius = '4px';
+            this.closeButton.style.boxShadow = '#fff 4px 4px 0 0, #000 4px 4px 0 1px';
+            this.closeButton.style.boxSizing = 'border-box';
+            this.closeButton.style.color = '#fff';
+            this.closeButton.style.cursor = 'pointer';
+            this.closeButton.style.display = 'inline-block';
+            this.closeButton.style.fontFamily = 'ITCAvantGardeStd-Bk, Arial, sans-serif';
+            this.closeButton.style.fontSize = '14px';
+            this.closeButton.style.fontWeight = '400';
+            this.closeButton.style.lineHeight = '20px';
+            this.closeButton.style.margin = '0 5px 10px 0';
+            this.closeButton.style.overflow = 'visible';
+            this.closeButton.style.padding = '12px 40px';
+            this.closeButton.style.textAlign = 'center';
+            this.closeButton.style.textTransform = 'none';
+            this.closeButton.style.touchAction = 'manipulation';
+            this.closeButton.style.userSelect = 'none';
+            this.closeButton.style.webkitUserSelect = 'none';
+            this.closeButton.style.verticalAlign = 'middle';
+            this.closeButton.style.whiteSpace = 'nowrap';
+            this.closeButton.style.marginTop = '10px';
+            this.closeButton.addEventListener('click', () => {
+                console.log('clicked');
+                location.reload();
+            });
+            const lineBreak = document.createElement('br');
+            this.popup.appendChild(lineBreak);
+            this.popup.appendChild(this.closeButton);
+        }
         document.body.appendChild(this.popup);
     }
     showPopup() {
