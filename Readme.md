@@ -1,0 +1,1 @@
+Ce micro-projet a été développé pour le cours INF 111 que j'ai suivi à Télécom Paris. Le projet consistait à recréer le jeu 2048 de A à Z en TypeScript.
